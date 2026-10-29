@@ -208,14 +208,13 @@ begin
   if not Result then
     Msg := Format('CorridorKey needs Windows 10 (version 22H2) or Windows 11, 64-bit.' + #13#10 +
                   'This PC runs Windows %d.%d build %d.' + #13#10#13#10 +
-                  'Please update Windows, then run this installer again. Nothing was installed.',
-                  [V.Major, V.Minor, V.Build]);
+                  'Please update Windows, then run this installer again. Nothing was installed.', [V.Major, V.Minor, V.Build]);
 end;
 
 function CheckGpu(var Msg: String; var Warning: String): Boolean;
 var
   Smi, Name: String;
-  Out: TExecOutput;
+  Capt: TExecOutput;
   RC, N, CompMaj, CompMin, Comp, DrvMaj, DrvMin, MiB: Integer;
   F: TArrayOfString;
 begin
@@ -226,19 +225,19 @@ begin
     Smi := ExpandConstant('{commonpf64}\NVIDIA Corporation\NVSMI\nvidia-smi.exe');
   if Simulate('nogpu') or (not FileExists(Smi)) or
      (not ExecAndCaptureOutput(Smi, '--query-gpu=name,compute_cap,driver_version,memory.total --format=csv,noheader,nounits',
-                               '', SW_HIDE, ewWaitUntilTerminated, RC, Out)) or (RC <> 0) or (GetArrayLength(Out.StdOut) = 0) then
+                               '', SW_HIDE, ewWaitUntilTerminated, RC, Capt)) or (RC <> 0) or (GetArrayLength(Capt.StdOut) = 0) then
   begin
     Msg := 'No NVIDIA graphics card (or no NVIDIA driver) was found on this PC.' + #13#10#13#10 +
            'CorridorKey needs an NVIDIA RTX 30-series graphics card or newer, with its driver installed. ' +
            'Nothing was installed.';
     Exit;
   end;
-  Log('nvidia-smi: ' + Out.StdOut[0]);
+  Log('nvidia-smi: ' + Capt.StdOut[0]);
   // The first line is GPU 0, the card CorridorKey uses (the app sets CUDA_DEVICE_ORDER=PCI_BUS_ID).
-  N := SplitCsv(Out.StdOut[0], F);
+  N := SplitCsv(Capt.StdOut[0], F);
   if N < 4 then
   begin
-    Msg := 'The NVIDIA driver answered in an unexpected way (' + Out.StdOut[0] + '). ' +
+    Msg := 'The NVIDIA driver answered in an unexpected way (' + Capt.StdOut[0] + '). ' +
            'Please update the NVIDIA driver and try again. Nothing was installed.';
     Exit;
   end;
@@ -255,28 +254,25 @@ begin
   begin
     Msg := 'This PC''s graphics card (' + Name + ') is older than an RTX 30-series.' + #13#10#13#10 +
            'CorridorKey needs an NVIDIA RTX 30-series card or newer. Nothing was installed.';
-    if GetArrayLength(Out.StdOut) > 1 then
+    if GetArrayLength(Capt.StdOut) > 1 then
       Msg := Msg + #13#10#13#10 + 'Note: this PC has more than one NVIDIA card; CorridorKey uses the first one (' + Name + ').';
     Exit;
   end;
   if (DrvMaj < MinDriverMajor) or ((DrvMaj = MinDriverMajor) and (DrvMin < MinDriverMinor)) then
   begin
     Msg := Format('The NVIDIA driver on this PC is version %d.%.2d. CorridorKey needs %d.%.2d or newer.' + #13#10#13#10 +
-                  'Update it from nvidia.com or the NVIDIA app, then run this installer again. Nothing was installed.',
-                  [DrvMaj, DrvMin, MinDriverMajor, MinDriverMinor]);
+                  'Update it from nvidia.com or the NVIDIA app, then run this installer again. Nothing was installed.', [DrvMaj, DrvMin, MinDriverMajor, MinDriverMinor]);
     Exit;
   end;
   if MiB < RefuseBelowMiB then
   begin
-    Msg := Format('%s has %d GB of graphics memory; CorridorKey needs at least 6 GB. Nothing was installed.',
-                  [Name, (MiB + 512) div 1024]);
+    Msg := Format('%s has %d GB of graphics memory; CorridorKey needs at least 6 GB. Nothing was installed.', [Name, (MiB + 512) div 1024]);
     Exit;
   end;
   if MiB < WarnBelowMiB then
     Warning := Format('%s has %d GB of graphics memory.' + #13#10#13#10 +
                       'CorridorKey will work, but only for small clips: larger clips will be refused, or keyed ' +
-                      'with a smaller time window (slightly softer edges).' + #13#10#13#10 + 'Install anyway?',
-                      [Name, (MiB + 512) div 1024]);
+                      'with a smaller time window (slightly softer edges).' + #13#10#13#10 + 'Install anyway?', [Name, (MiB + 512) div 1024]);
   Result := True;
 end;
 
@@ -294,8 +290,7 @@ begin
   end;
   if Length(Dir) > MaxPathLen then
   begin
-    Msg := Format('Please choose a shorter folder path (at most %d characters; this one has %d), for example C:\CorridorKey.',
-                  [MaxPathLen, Length(Dir)]);
+    Msg := Format('Please choose a shorter folder path (at most %d characters; this one has %d), for example C:\CorridorKey.', [MaxPathLen, Length(Dir)]);
     Exit;
   end;
   Drive := ExtractFileDrive(Dir);
@@ -308,8 +303,7 @@ begin
   if FreeMB < NeedFreeGB * 1024 then
   begin
     Msg := Format('The drive %s has %d GB free; CorridorKey needs %d GB.' + #13#10#13#10 +
-                  'Free some space or choose a folder on another drive. Nothing was installed.',
-                  [Drive, FreeMB div 1024, NeedFreeGB]);
+                  'Free some space or choose a folder on another drive. Nothing was installed.', [Drive, FreeMB div 1024, NeedFreeGB]);
     Exit;
   end;
   Result := True;
