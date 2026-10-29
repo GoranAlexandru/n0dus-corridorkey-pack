@@ -264,6 +264,8 @@ def build(payload: Path, record: bool, download_only: bool = False):
     shutil.copyfile(REPO / "scripts" / "verify.py", stage / "app" / "verify.py")
     shutil.copytree(REPO / "licences", stage / "licences", dirs_exist_ok=True)
     for d in src.get("licence_docs", []):
+        # (the target folder may not exist in a fresh clone: git does not keep empty folders)
+        (stage / "licences" / d["into"]).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(dl / "licence_docs" / d["file"], stage / "licences" / d["into"])
     (stage / "licences" / "python").mkdir(parents=True, exist_ok=True)
     shutil.copyfile(stage / "python" / "LICENSE.txt", stage / "licences" / "python" / "LICENSE.txt")
