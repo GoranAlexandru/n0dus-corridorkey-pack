@@ -12,6 +12,21 @@ last page of the installer says whether the self-test passed.
 Plain-language summary of the decisions you need to make is at the end
 (**STOP 1 QUESTIONS**). Each has a recommended option, listed first.
 
+## STATUS
+
+**Phase 1 done, at STOP 2 (2026-10-29).** Installer 1.0.0 built and tested on
+the build PC; results in `docs/owner.md` §7. Repo pushed to the private GitHub
+repo `GoranAlexandru/n0dus-corridorkey-pack` (code, docs, manifest only).
+Deviations from this plan, found while building:
+- The ffmpeg 6.0 source tarball comes from FFmpeg's official GitHub mirror
+  (tag `n6.0`), because ffmpeg.org is unreachable from the build PC.
+- The ffmpeg zip's pin was recorded on first download: gyan.dev and GitHub
+  publish no checksum for that old release.
+- Upstream's `CorridorKey_DRAG_CLIPS_HERE.bat/.sh` are left out of the install
+  (they'd use PATH Python); no CorridorKey code changed.
+- In silent installs the folder/disk refusals stop Setup at the folder page
+  (exit 1), one step before the planned backstop; nothing is written either way.
+
 ## OWNER RULINGS AT STOP 1 (2026-10-29)
 
 | Q | Ruling | What it means for the build |

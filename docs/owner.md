@@ -59,7 +59,7 @@ GPL). Details: `PACK_PLAN.md`, "OWNER RULINGS AT STOP 1".
 
 | Place | What | In git? |
 |---|---|---|
-| `Q:\tools\ck-pack\` | this repo: app, scripts, installer script, manifest, licences, docs | yes; pushed to the private GitHub repo |
+| `Q:\tools\ck-pack\` | this repo: app, scripts, installer script, manifest, licences, docs | yes; pushed to the private GitHub repo https://github.com/GoranAlexandru/n0dus-corridorkey-pack |
 | `Q:\tools\ck-pack-payload\downloads\` | every original download, as fetched (8.2 GB) | **never** |
 | `Q:\tools\ck-pack-payload\stage\` | the exact folder the installer copies (10.5 GB, 34 286 files) | **never** |
 | `Q:\tools\ck-pack-payload\out\` | `CorridorKey-Setup.exe` + `CorridorKey-Setup-1.bin` + `SHA256SUMS.txt` | **never** |
@@ -107,12 +107,22 @@ replaces everything else. The installer asks the user to close CorridorKey first
 If any upstream source disappears (a Hugging Face repo, the GitHub release,
 the PyTorch index), the pack can still be rebuilt from your archive.
 
-Copy to a second drive or the NAS:
-- `Q:\tools\ck-pack-payload\` **without** `stage\` (it is rebuilt from
-  `downloads\` in minutes, offline). Size: see `BUILD_INFO.json`
-  (downloads ≈ 8.2 GB);
-- `Q:\tools\ck-pack-payload\out\` (the finished installer, ≈ SIZE_OUT GB);
+Copy to a second drive or the NAS: **`Q:\tools\ck-pack-payload\` without
+`stage\` = 16.28 GB** (measured 2026-10-29, pack 1.0.0):
+- `downloads\` (8.21 GB): every original download, as fetched;
+- `out\` (8.07 GB): the finished installer (`CorridorKey-Setup.exe`
+  5.4 MB + `CorridorKey-Setup-1.bin` 8.07 GB + `SHA256SUMS.txt`);
+- `BUILD_INFO.json` and `build_payload.log`;
 - the repo (or rely on the GitHub copy).
+
+`stage\` (10.51 GB) need not be archived: `build_payload` rebuilds it from
+`downloads\` offline in about 5 minutes.
+
+Installer checksums (pack 1.0.0), to check an archived copy is intact:
+```
+77af27369e44f503b2c8fb025a42af853a4917a50a0504e88e1a1b9970064212  CorridorKey-Setup.exe
+a422746276139e464158ff7ca4f24823f6d8cea208adbbae9a886011f86ff801  CorridorKey-Setup-1.bin
+```
 
 Rebuilding from the archive: put `downloads\` back under
 `Q:\tools\ck-pack-payload\`, run `build_payload` (it re-hashes everything
@@ -132,4 +142,26 @@ already there and downloads nothing), then `build_installer`.
 
 ## 7. Test results (Phase 1)
 
-FILLED_IN_AFTER_TESTS
+All on the build PC (Windows 10 22H2 build 19045, RTX 3090 24 GB, driver 610.62),
+2026-10-29, installer 1.0.0 as checksummed in §5.
+
+| Test | Result |
+|---|---|
+| Build from official sources | 71 pinned downloads + 5 new pins (ffmpeg zip, ffmpeg source, 3 licence documents) recorded on first download; 2 git sources at their commits. Stage 34 286 files, 10.51 GB, matches its list exactly |
+| Installer compile | 132 s → `CorridorKey-Setup.exe` 5.4 MB + `CorridorKey-Setup-1.bin` 8.07 GB |
+| Pre-checks forced to fail (`tests\test_installer_prechecks.ps1`) | **8/8 PASS**: old Windows, no GPU, old GPU, old driver, under 6 GB, low disk, non-ASCII folder, and the 6–8 GB warning; each logged its plain message and wrote nothing |
+| Pre-checks on this real PC | pass (`RTX 3090, 8.6, 610.62, 24576`) |
+| Fresh silent install into `C:\ck-test\CorridorKey` | **276 s** total; self-test **PASS**: verify 34 286 files 48.6 s, model load 10.3 s, key 14.3 s with alpha 0.000 on the background box and 1.000 on the subject box |
+| Relocation | Python built in `Q:\tools\ck-pack-payload\stage`, ran from `C:\ck-test\CorridorKey` |
+| Isolation | runner keyed a still AND a clip with a hostile environment: bogus `PYTHONHOME`, a booby-trapped `numpy` on `PYTHONPATH`, Anaconda first on PATH, failing fake `ffmpeg`/`ffprobe` on PATH. A normal Python cannot even start in that environment; the pack keyed fine and the colour-tag check passed with the bundled ffprobe |
+| Equivalence with the reference (`tests\equivalence.py`) | **PASS**: still key/alpha PNGs pixel-identical (max difference 0); clip fg and alpha, all 48 decoded frames identical. The reference folder was unchanged afterwards (git status and file times checked) |
+| Window | built hidden: drag-and-drop loaded, GPU "NVIDIA GeForce RTX 3090 24 GB", settings in `data\`, stray `PYTHONPATH` removed |
+| Output inside the install folder | refused (`output_inside_install`), nothing created |
+| Upgrade (same 1.0.0 installer re-run, no folder given) | 279 s, found the old folder itself; settings byte-identical, 9 old logs kept, a stale file planted in `python\` removed, self-test PASS |
+| Uninstall | 12 s; Apps entry, Start-menu entry, `install.json` all gone; only a user note planted in the install root survived (so the folder stayed); the outputs folder beside it untouched |
+
+Not tested here: a second, different PC (the real test, ideally one RTX 30/40
+card with 8–12 GB), and a true version-to-version upgrade (1.0.0 → 1.0.1;
+the steps involved don't depend on the version number). The interactive
+wizard pages were not clicked through (no desktop automation on this PC); every
+check they show was exercised silently.

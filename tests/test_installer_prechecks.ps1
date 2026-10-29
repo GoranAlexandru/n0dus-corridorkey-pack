@@ -11,16 +11,18 @@ $ErrorActionPreference = "Stop"
 New-Item -ItemType Directory -Force $Work | Out-Null
 $target = "C:\ck-precheck-target\CorridorKey"
 
-# case, expected exit code (1 = stopped before the wizard, 7 = stopped before copying), log text
+# case, expected exit code, log text. Exit 1 = Setup stopped before copying anything: the hardware
+# checks stop it at start-up, the folder/disk checks on the folder page (in silent installs too).
+# PrepareToInstall repeats the folder/disk check as a backstop (exit 7) but these cases never reach it.
 $cases = @(
     @("oldwindows", 1, "needs Windows 10 (version 22H2) or Windows 11"),
     @("nogpu", 1, "No NVIDIA graphics card"),
     @("oldgpu", 1, "older than an RTX 30-series"),
     @("olddriver", 1, "CorridorKey needs 570.65 or newer"),
     @("lowvram", 1, "needs at least 6 GB"),
-    @("lowdisk", 7, "CorridorKey needs 12 GB"),
-    @("unicodedir", 7, "only plain English letters"),
-    @("smallvram,lowdisk", 7, "only for small clips")   # 6-8 GB: warning logged, then stopped by the disk check
+    @("lowdisk", 1, "CorridorKey needs 12 GB"),
+    @("unicodedir", 1, "only plain English letters"),
+    @("smallvram,lowdisk", 1, "only for small clips")   # 6-8 GB: warning logged, then stopped by the disk check
 )
 $failed = 0
 foreach ($c in $cases) {

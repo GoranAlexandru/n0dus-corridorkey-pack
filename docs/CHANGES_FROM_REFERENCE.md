@@ -22,8 +22,16 @@ Not carried over from the reference: `Start CorridorKey.bat` (the Start-menu
 shortcut starts `pythonw.exe -I app\ck_gui.py` directly; no console window),
 `settings.json` (the owner's own), `logs\`.
 
+Left out of the install from upstream CorridorKey (no code changed):
+`CorridorKey_DRAG_CLIPS_HERE.bat` / `.sh`. Without a `venv\` folder they fall
+back to whatever `python` is on PATH, exactly what the pack exists to avoid.
+The Start-menu window replaces them. Every other upstream file is installed
+byte-for-byte.
+
 ## Proof that keying is unchanged
 
-Phase 1 keyed the synthetic test clip and still with the reference install and
-with the installed pack, and compared the outputs; see "Equivalence" in
-`docs/owner.md`.
+`tests/equivalence.py` keyed the synthetic still and 48-frame clip with the
+reference install's own Python + upstream `infer.py`, and with the installed
+pack's runner (same window), using the same ffmpeg. Result 2026-10-29: still
+key/alpha pixel-identical, clip fg/alpha decoded frames identical (all 48).
+See `docs/owner.md` §7.
