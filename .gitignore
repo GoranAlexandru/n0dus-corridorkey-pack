@@ -1,0 +1,27 @@
+# Big files never go into git (PACK_PLAN.md rules).
+# The payload lives outside the repo (Q:\tools\ck-pack-payload\).
+*.bin
+*.exe
+*.whl
+*.safetensors
+*.pt
+*.pth
+*.npz
+*.7z
+*.zip
+*.tar
+*.tar.gz
+*.tar.xz
+*.mp4
+*.mov
+*.m4v
+*.exr
+*.png
+*.jpg
+*.jpeg
+__pycache__/
+*.pyc
+/build/
+/out/
+/payload/
+*.log
