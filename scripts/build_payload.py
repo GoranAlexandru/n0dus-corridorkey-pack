@@ -116,7 +116,7 @@ def _record(dest, got, label, pin_ref, sources, record):
                        "Re-run with --record-new-pins to record it in manifest/sources.json "
                        "(do this only for a source you trust, and commit the change).")
     pin_ref["sha256"] = got
-    SOURCES.write_text(json.dumps(sources, indent=1) + "\n")
+    SOURCES.write_text(json.dumps(sources, indent=1) + "\n", newline="\n")
     log(f"  NEW PIN RECORDED  {label}: {got}")
     return dest
 
@@ -272,7 +272,7 @@ def build(payload: Path, record: bool, download_only: bool = False):
     run([pyexe, "-I", "-B", REPO / "scripts" / "make_icon.py", stage / "app" / "corridorkey.ico"], env=env)
     (stage / "manifest").mkdir()
     shutil.copyfile(SOURCES, stage / "manifest" / "sources.json")
-    (stage / "VERSION").write_text(PACK_VERSION + "\n")
+    (stage / "VERSION").write_text(PACK_VERSION + "\n", newline="\n")
 
     log("== 4. file list")
     entries = verify.scan(stage)
