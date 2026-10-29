@@ -1,0 +1,16 @@
+FFmpeg source code (GPL version 3, section 6)
+=============================================
+
+The ffmpeg.exe / ffprobe.exe in this pack are the gyan.dev "essentials" build
+of FFmpeg release 6.0 (GitHub: GyanD/codexffmpeg, release tag 6.0).
+
+The matching FFmpeg 6.0 source code is the release tag n6.0 from FFmpeg's
+official GitHub mirror:
+  https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n6.0.tar.gz
+(the same source ffmpeg.org publishes as ffmpeg-6.0.tar.xz).
+A copy, checked against the SHA-256 recorded in manifest/sources.json
+("ffmpeg_source"), is kept with the pack's build files
+(Q:\tools\ck-pack-payload\downloads\ffmpeg\FFmpeg-n6.0.tar.gz) and their
+archive copies. Anyone who received this pack can ask the pack's owner for it.
+The build configuration of these binaries is printed by: ffmpeg.exe -version
+The gyan.dev build scripts are described at https://www.gyan.dev/ffmpeg/builds/

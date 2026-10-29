@@ -1,0 +1,23 @@
+CorridorKey Pack — please read
+
+This installs CorridorKey 2.0, an AI keyer for green- and blue-screen footage
+made by Corridor Digital LLC, together with everything it needs to run on this
+PC without internet access.
+
+STUDIO-INTERNAL USE ONLY
+* This pack is for use inside our studio only. Do not give it, or copies of
+  it, to anyone outside the company: freelancers, clients, partner studios
+  or the public.
+* It is never sold or charged for.
+
+CorridorKey is licensed under the Corridor Key Licence (CC BY-NC-SA 4.0 plus
+Corridor Digital's additional terms). The images and videos you make with it
+are yours. CorridorKey also uses third-party models and software under their
+own licences (NVIDIA C-RADIOv4 under the NVIDIA Open Model License, Microsoft
+MoGe-2, Google DeepMind RVM, PyTorch, FFmpeg and others). All licence texts
+are installed in the "licences" folder, and the CorridorKey window's About
+button opens it.
+
+The software is provided as-is, without warranty of any kind.
+
+By clicking "I accept" you confirm you have read this note.

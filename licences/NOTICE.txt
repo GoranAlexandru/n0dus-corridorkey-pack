@@ -1,0 +1,59 @@
+CorridorKey Pack — notices
+==========================
+
+This pack is for STUDIO-INTERNAL use only (owner's decision, 2026-10-29,
+recorded in docs/owner.md). It is not for sale and is not given to anyone
+outside the company.
+
+CorridorKey
+-----------
+CorridorKey 2.0, Copyright (c) Corridor Digital LLC. All rights reserved.
+https://github.com/nikopueringer/CorridorKey2.0 (commit 485f5e9) and
+https://huggingface.co/nikopueringer/CorridorKey2.0 (revision cf44a8d).
+Licensed under the Corridor Key Licence, Version 2.0 (CC BY-NC-SA 4.0 plus
+Corridor's additional terms): see LICENSE in the CorridorKey install folder.
+The CorridorKey code and weights are included UNMODIFIED. The pack adds its own
+launcher, runner and window (the app folder), which run CorridorKey's infer.py
+unchanged.
+Disclaimer of warranties: CC BY-NC-SA 4.0 Section 5 applies.
+
+C-RADIOv4-SO400M (frozen visual feature extractor)
+--------------------------------------------------
+Licensed by NVIDIA Corporation under the NVIDIA Open Model License
+Source: https://huggingface.co/nvidia/C-RADIOv4-SO400M (revision c0457f5)
+Licence: nvidia/NVIDIA-Open-Model-License-June-2024.pdf
+
+MoGe-2 ViT-B (frozen geometry feature extractor)
+------------------------------------------------
+Copyright (c) Microsoft Corporation. MIT License (code and weights).
+Source: https://github.com/microsoft/MoGe, weights
+https://huggingface.co/Ruicheng/moge-2-vitb-normal (revision ca5f0e0).
+Licence text: third_party/MoGe/LICENSE in the install folder (includes the
+Apache License 2.0 of the vendored DINOv2 code, Meta Platforms, Inc.).
+
+RVM (Recurrent Video MAE), small (frozen video feature extractor)
+-----------------------------------------------------------------
+By Google DeepMind. https://github.com/google-deepmind/representations4d
+Weights: pretrain_rvm_small16_256_204031069.npz, licensed under Creative
+Commons Attribution 4.0 (rvm/CC-BY-4.0.txt), not modified.
+Code: Apache License 2.0 (rvm/Apache-2.0.txt).
+
+FFmpeg
+------
+ffmpeg.exe and ffprobe.exe are the FFmpeg 6.0 "essentials" build by gyan.dev
+(https://www.gyan.dev/ffmpeg/builds/, GitHub GyanD/codexffmpeg release 6.0),
+licensed under the GNU General Public License version 3 (ffmpeg/LICENSE).
+FFmpeg is a trademark of Fabrice Bellard. Source: see ffmpeg/SOURCE.txt.
+
+Python and Python packages
+--------------------------
+Python 3.11.18 (python-build-standalone 20261026), PSF License:
+python/LICENSE.txt (includes the licences of the libraries bundled with Python).
+Every installed Python package's own licence files are in python-packages/,
+copied from the package metadata at build time. Notably: PyTorch and
+torchvision (BSD-3-Clause; the PyTorch wheel includes NVIDIA CUDA runtime
+libraries under NVIDIA's redistribution terms), OpenCV (Apache 2.0),
+tkinterdnd2 (MIT; bundles tkdnd, BSD-style), Hugging Face transformers /
+huggingface_hub / tokenizers / safetensors / timm (Apache 2.0), NumPy and
+SciPy (BSD-3-Clause), Pillow (MIT-CMU), certifi (MPL-2.0),
+utils3d (MIT, https://github.com/EasternJournalist/utils3d @ 83bfa5b).
