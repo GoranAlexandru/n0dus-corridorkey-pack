@@ -1,19 +1,19 @@
-# CorridorKey Pack 1.0.0 payload, built 2026-10-29 10:38
+# CorridorKey Pack 1.0.0 payload, built 2026-10-29 10:43
 # sha256 size path (relative, forward slashes)
 68829e98a5947567b60d1a3bc190cde51b87bfe64cf718d1dcaaa76fbe55da61 27247 LICENSE
 adbb0a26c2875e4955531065b60afb460e265c9dfeac82ad2e446be2aaf5b862 22675 README.md
 4b2480dc64f93c34099e56dc0a50942d2818461d56ceb483e9ececa56fe4627b 1745 THIRD_PARTY_NOTICES.md
-4ca8bbd3c595ee306226c6996b32b8d47a900217c55a7ed0cfc868ee444f34f1 7 VERSION
+59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03 6 VERSION
 fc83ef17cf6ebee5ad89984abe681cecb243ecf2df3345f02b3e5c62bcf99d71 4049 app/ck_env.py
-2dc7d2fc14fc839b650afabd37b6e1f6d97f7908efc54d99ea75c897fc04d3ba 27112 app/ck_gui.py
+73a51e69f30c9209d7c148be508dcb7733b7058fba89cc213edfe1967a185b20 26533 app/ck_gui.py
 b4964c6f1b31a6217fc5becc25af7e89bd8879c67d2c9bdeb9d392f4527ca944 1595 app/ck_infer_shim.py
-47525267acabc2ca0b82f9a5c256324977dfc0554b883063b09088d4263cd04a 34302 app/ck_run.py
+c14448f71e232f4a3d453c7e2ffad08f6964d4747f67de1bc71557cf4e96846e 33661 app/ck_run.py
 e18a87542866946180478461154636c546236e7c5540eaa97096ea57f8dc4e9d 13971 app/corridorkey.ico
-90690993305ecc254450c786eaa1eef6a224bff050b4c5baccc74e503057e04e 7760 app/gpu_win.py
-ef99fa0765028214f841c594ccb529cab957d2997922b385628a4ce5fa817e96 9224 app/selftest.py
+e5273a7d21b4526e341c467859bb6d62ea0866a07cfd49eb6b20fa7c38485158 7570 app/gpu_win.py
+26037e223fa0154af87ab6bb89b4cac8314053051ccf83c2c6f10424d9895671 9004 app/selftest.py
 d338584ccc9a73b673b72ecc08e61c4dc9f8e6cdbd63f29ebbfadce82b883f24 6790 app/stills.py
-16e7a2c35260dca0adc3a99f84131290056f344baf22a9c2d2cb61d1c6df5653 4772 app/verify.py
-3ddc003e31091579edeb52bbe37aa538f29177202d116f71d565493393304910 6942 app/vram_plan.py
+6fa98f19025881b4efb41f4f310e8889e89c9440f42937ad8bea78e164b5fbf3 4786 app/verify.py
+049bc3d896fed738d5537761d3940ae21ca7d39978bac517a15c100d54e9979b 6808 app/vram_plan.py
 c87282a5777ef40c3221b930f1476ba2d7d4066fa6b0e4ded84b0f690ec88c27 179 corridorkey/__init__.py
 6f1b3502968bcf350d391e94ef639cc9a4dea5b372acc8fa0f0e35e5c856b35b 143043 corridorkey/blocks.py
 aa665cf9a82898f6725366a1b3879f0b0cf7a017e84b01522a447a9e08110641 7075 corridorkey/color_utils.py
@@ -99,7 +99,7 @@ e3a41a1b23f252ba951048718e78531ee8fd43a5c85299c290bb0cd62d3a7129 1095 licences/p
 886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a 25066 licences/python/LICENSE.txt
 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30 11358 licences/rvm/Apache-2.0.txt
 9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411 18657 licences/rvm/CC-BY-4.0.txt
-ef0bcbca6ab122f9d994c38a414562cc4da8ed948e8f42c7b1053af84cbf443b 29479 manifest/sources.json
+964a089eb096587d875ee620bbac65012c32444a66bf0d417855d1dcbd72a0a3 28893 manifest/sources.json
 04ce6c65ce6cb77e671111aabc4c63c69f4b7ec538e2a704e734619b08d671ea 53248 python/DLLs/_asyncio.pyd
 3cf1de3b6d5b249c9f4d0a1abfebf20019ae9443f7ffa6631840a3e0120549fb 72704 python/DLLs/_bz2.pyd
 ccb526912dc340a7cece69a76b01534a368fb616881b8a90959cb5577acd3ad8 119296 python/DLLs/_ctypes.pyd
@@ -1652,7 +1652,7 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/si
 7c179d1edf37f7e912b133663735fb46c6338d5d0e5f8915d11c3bc287d227b8 467 python/Lib/site-packages/certifi/tests/test_certify.py
 ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/site-packages/charset_normalizer-3.5.2.dist-info/INSTALLER
 49e955a09e1a159e0846872798006e8db7d518d8d70c637066fefdb08d3d9f7b 47287 python/Lib/site-packages/charset_normalizer-3.5.2.dist-info/METADATA
-761936057322b03cd439696249b58b6110c0587ffad51442b8f46525a1fe1ef9 2177 python/Lib/site-packages/charset_normalizer-3.5.2.dist-info/RECORD
+7a1bc219d90c962927816be40d94d99548310fb15c25a7fa8934eabc14a36cf6 2177 python/Lib/site-packages/charset_normalizer-3.5.2.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/charset_normalizer-3.5.2.dist-info/REQUESTED
 55ad5e704e1a425731c9b664712be1d8578dd7f0e50bc21a24d249b02258123d 101 python/Lib/site-packages/charset_normalizer-3.5.2.dist-info/WHEEL
 0034932ab91767786174e5458ba0dc5041d0452d317f10c813fa44cf8c0b2170 65 python/Lib/site-packages/charset_normalizer-3.5.2.dist-info/entry_points.txt
@@ -2096,7 +2096,7 @@ a5041d3d66814b6533657afaefd962800b91d297f4e2938a6cee93ec5cf209dd 1263 python/Lib
 efb5007f44d0b3d793dcb70ad79dd548b646a2a002884c9d2eff8f18d9c21de2 15360 python/Lib/site-packages/glcontext/wgl.cp311-win_amd64.pyd
 ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/site-packages/huggingface_hub-0.36.2.dist-info/INSTALLER
 4dc2b0a3fb27bcba8b091f98bccff4b94369d269c9768aeaecd0b99d970665d9 15201 python/Lib/site-packages/huggingface_hub-0.36.2.dist-info/METADATA
-328e2f753d9ebf7315b3c10be9922627ef35400e53f4f27f6def086b3c2d662e 17480 python/Lib/site-packages/huggingface_hub-0.36.2.dist-info/RECORD
+8a905911aa80e54db2ba542a113140d9b219062369448bd35567d01935d5d882 17480 python/Lib/site-packages/huggingface_hub-0.36.2.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/huggingface_hub-0.36.2.dist-info/REQUESTED
 4a63b1614ee9ccd281a804af409ec38d7dd719417dda5ac684c6f747afe28aa2 91 python/Lib/site-packages/huggingface_hub-0.36.2.dist-info/WHEEL
 14651dbeef33fb1ee5be8278b9dba685c83702dce280fada0a7fd96e312122da 218 python/Lib/site-packages/huggingface_hub-0.36.2.dist-info/entry_points.txt
@@ -2429,7 +2429,7 @@ f55b48025c50e47ff8cb7d2c8c20206eeed70aa02d34b0bb69163168d9f484b2 2366 python/Lib
 c4029cc9f9cd1ec67b2f4f56b84339130e7e3038626a12c009b6cddb332670bb 10671 python/Lib/site-packages/huggingface_hub/utils/tqdm.py
 ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/site-packages/idna-3.20.dist-info/INSTALLER
 dbd8c14c1e4ca1e0c9824a6dbc7cbbf78884f38eb52d91148cd3025f671e4b85 7207 python/Lib/site-packages/idna-3.20.dist-info/METADATA
-b78246270135137f3557a652153465f1bd2243ee3a3842581a2cd5b61136d7be 1435 python/Lib/site-packages/idna-3.20.dist-info/RECORD
+b8e0426acdcaa123c0565dc0b0f3ee4800cbab811a3d8f3034a26c16363aa953 1435 python/Lib/site-packages/idna-3.20.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/idna-3.20.dist-info/REQUESTED
 96a37c8d7b7f425a05386731f644adbd66ebca17c45e8236176cfe614466df9d 81 python/Lib/site-packages/idna-3.20.dist-info/WHEEL
 ec7de718e1daa778e72c4e5eeeaed8c2bf55abc6b107b5888f9f82ff8376be1c 38 python/Lib/site-packages/idna-3.20.dist-info/entry_points.txt
@@ -3909,7 +3909,7 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/si
 ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/site-packages/numpy-1.26.4.dist-info/INSTALLER
 e261222a74adff28f88160dac1c5cb302d93b67e9ca989eb83bf311e11a9970a 48688 python/Lib/site-packages/numpy-1.26.4.dist-info/LICENSE.txt
 5a27a0e272b1f6e597acbbf58e8da39ae350b2318db8df4cf49d72518e62eebc 61040 python/Lib/site-packages/numpy-1.26.4.dist-info/METADATA
-8479afb565fc6872b0d95f017ee50f53d0858df99e26595be419eb4608dcf8c3 87369 python/Lib/site-packages/numpy-1.26.4.dist-info/RECORD
+31a0f3805a1692603a28f6da73ce91aa094360894e82ecaf939f77bdad011ed1 87369 python/Lib/site-packages/numpy-1.26.4.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/numpy-1.26.4.dist-info/REQUESTED
 25d2d35a173bde827e96a4c16068225689edaffbe1cf0cdba403a29ffd9bc532 85 python/Lib/site-packages/numpy-1.26.4.dist-info/WHEEL
 cdd772609b94c3d52e77b2de2dfca75e4eb6febcb49468a10f008882e8017593 144 python/Lib/site-packages/numpy-1.26.4.dist-info/entry_points.txt
@@ -9755,7 +9755,7 @@ c6402dbe09bbb8f4f2615db3a95990d3003c90bc0ec914f625eb35cc0cb4ecab 8624 python/Lib
 c16e0860b33506fed9d4c69ab8fdb198f8f2cbec249909d7772bd7b1c01ff5fc 726 python/Lib/site-packages/setuptools/windows_support.py
 ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/site-packages/sympy-1.14.0.dist-info/INSTALLER
 b756c2fbfd5be05ac5bdb0ebca61f55618f30f633ed92d88a5687429313a7595 12816 python/Lib/site-packages/sympy-1.14.0.dist-info/METADATA
-2f6f09caec257771ca2f4a70a1e07af29b966e8b3f5949801b6adf8ce28223d3 147190 python/Lib/site-packages/sympy-1.14.0.dist-info/RECORD
+78353857659b9dd2767f8467abd455e18694651fb0adbf80dbf09c77c7994e72 147190 python/Lib/site-packages/sympy-1.14.0.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/sympy-1.14.0.dist-info/REQUESTED
 4a63b1614ee9ccd281a804af409ec38d7dd719417dda5ac684c6f747afe28aa2 91 python/Lib/site-packages/sympy-1.14.0.dist-info/WHEEL
 4a9faf2c9a26e0f4658467d8e91a54adeed28d89b7dc936af4d0b0086796f9f4 39 python/Lib/site-packages/sympy-1.14.0.dist-info/entry_points.txt
@@ -13649,7 +13649,7 @@ ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/si
 61ebd22a90ad993ee4fa372cd91dca44fe04519f0259c5440f556d9237535007 540626 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/LICENSE
 444fccc87b11a351376b45426989c4eea65273b74499cb620e5acb87b7c4ddf5 29676 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/METADATA
 1c3dec6c0342c7ed9e12af59b296c7bb1d394af5cf881db74191cc8299efce5c 24088 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/NOTICE
-65d76386b088ade87df505a26da69498a5aacc01d568574932632a5685c67786 1234323 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/RECORD
+b4dcb3ae3f53312f7f5273f839b5e1204ea952fb0b71f4b05a0a2291a4458e61 1234323 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/REQUESTED
 480c3c9ecea42562675e76d1134d13b5ca465b1e386775af8c9b03471c08c6bf 101 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/WHEEL
 6fcb77f2adf4d4c2ab2f80b17e7faafe6a29e9b33376466c2a69b61ec9cdb264 199 python/Lib/site-packages/torch-2.9.1+cu128.dist-info/entry_points.txt
@@ -27690,7 +27690,7 @@ c4fc76a64d89cf80c7d84eca799ee7d88cfe6d5caa54860bc2b79547037407b9 35361 python/Li
 bb5e7e442c70bdfa2d3c45c9620835ecc5e98191bde2bc226b4d799a09ad30b3 101192 python/Lib/site-packages/torchvision/zlib.dll
 ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/site-packages/tqdm-4.70.1.dist-info/INSTALLER
 a5da70b966afea3a759716041bad7187f2ece02c22348cf9e7c0a512bbf15f57 57366 python/Lib/site-packages/tqdm-4.70.1.dist-info/METADATA
-39904758588f274e38291919a5b9247cdee9d324ff95155a84304bdbeac2a1a4 3205 python/Lib/site-packages/tqdm-4.70.1.dist-info/RECORD
+f1eaef753e658157ba6093697714b7c4e98247604f17db493bf2241a30752ccf 3205 python/Lib/site-packages/tqdm-4.70.1.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/tqdm-4.70.1.dist-info/REQUESTED
 61532836a2b3111b7ec23519c09df7c41180c27165fb872a6d8913b566b88ad1 91 python/Lib/site-packages/tqdm-4.70.1.dist-info/WHEEL
 45e2421fb522dd9ca1e8cd7a1383a1b19d6853b5ad31709f6eda3206118edbd6 39 python/Lib/site-packages/tqdm-4.70.1.dist-info/entry_points.txt
@@ -27762,7 +27762,7 @@ a3f7f4577d87ff0ae7d179919e8de3f6927dc65a79c4bd1f1d3de0b6a2fe939f 9746 python/Lib
 d2e1f84cb7bc23c1fbd71dbd7659ad11904e6cb4f76f9216fa7cad177574215c 233 python/Lib/site-packages/tqdm/version.py
 ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508 4 python/Lib/site-packages/transformers-4.57.6.dist-info/INSTALLER
 91601044a74fe02571a825356754dbbaa9e1d3e3dd3c2237254c15e903e421e3 43991 python/Lib/site-packages/transformers-4.57.6.dist-info/METADATA
-fbd7fa7450260ddb9e3f6d4e1fcdaac15427d08f79f0e4c82a491e44b7976eb3 242676 python/Lib/site-packages/transformers-4.57.6.dist-info/RECORD
+1a2dcf6442f77c9d3b8ec084e620e4c5a28d69a3a947947f8ac59e93f81b3e1e 242676 python/Lib/site-packages/transformers-4.57.6.dist-info/RECORD
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 python/Lib/site-packages/transformers-4.57.6.dist-info/REQUESTED
 ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b 91 python/Lib/site-packages/transformers-4.57.6.dist-info/WHEEL
 66b6b7755432b7a4377d4fecba80f7805f35255dd6795f201faeafce87afe34f 144 python/Lib/site-packages/transformers-4.57.6.dist-info/entry_points.txt
