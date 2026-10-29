@@ -22,7 +22,7 @@ Cancel: write "cancel" on stdin, create the --cancel_file, or Ctrl+C.
 Exit codes: 0 done, 1 error, 2 bad arguments, 3 cancelled, 4 skipped (has alpha),
 5 not enough GPU memory.
 
-usage: venv\\Scripts\\python.exe app\\ck_run.py CLIP --out_dir DIR [--vram auto|GB]
+usage: python\\python.exe -I app\\ck_run.py CLIP --out_dir DIR [--vram auto|GB]
        [--copy_original] [--overwrite] [--screen auto|green|blue] [--plan_only]
        [--png16] [--key_anyway] [--window C/S] [--cancel_file PATH]
 """
@@ -47,14 +47,19 @@ APP = Path(__file__).resolve().parent
 ROOT = APP.parent
 sys.path.insert(0, str(APP))
 
+import ck_env  # noqa: E402  (pack: paths + clean environment, applied before anything runs)
+
+ck_env.apply()
+ck_env.hold_single_instance_marker()
+
 import gpu_win  # noqa: E402
 import stills  # noqa: E402
 import vram_plan  # noqa: E402
 
-PY = ROOT / "venv" / "Scripts" / "python.exe"
+PY = ck_env.PY
 SHIM = APP / "ck_infer_shim.py"
-JOBS = ROOT / "tmp" / "jobs"
-LOGS = APP / "logs"
+JOBS = ck_env.TMP / "jobs"
+LOGS = ck_env.LOGS
 
 # Spill watchdog (docs: SETUP_RECIPE.md "GPU memory").
 SAMPLE_S = 2.0
@@ -215,6 +220,11 @@ class Runner:
                 return 5
             if a.plan_only:
                 return 0
+            if ck_env.inside_install(out_dir):
+                raise JobError("output_inside_install",
+                               f"The output folder {out_dir} is inside CorridorKey's own install folder "
+                               f"({ck_env.ROOT}), which an update or uninstall replaces. Choose a folder "
+                               "outside it.")
             if existing and not a.overwrite:
                 raise JobError("output_exists", f"{len(existing)} output file(s) already exist (use --overwrite): "
                                                 + ", ".join(existing[:5]))
@@ -372,10 +382,10 @@ class Runner:
         temp.mkdir(parents=True, exist_ok=True)
         chunk_eff = min(chunk, clip["frames"])
         stride_eff = max(1, min(stride, chunk_eff // 2 or 1))
-        cmd = [str(PY), "-u", str(SHIM), "--input", str(src), "--output_dir", str(out),
+        cmd = [str(PY), "-I", "-u", str(SHIM), "--input", str(src), "--output_dir", str(out),
                "--temp_dir", str(temp), "--low_vram", "--hann_chunk", str(chunk_eff),
                "--hann_stride", str(stride_eff), "--outputs", "alpha", "fg",
-               "--despill_strength", "0"]
+               "--despill_strength", "0", "--ffmpeg_bin", str(ck_env.FFMPEG)]
         if exr:  # stills/sequences: EXR (no video codec in the way), converted to PNG by the runner
             # float only where it can matter: half's ~11-bit mantissa is ~0.05 of an
             # 8-bit step, but coarser than a 16-bit step. Half EXRs halve stage-2 I/O.
@@ -384,9 +394,9 @@ class Runner:
             cmd += [self.screen_flag, self.a.screen]
         self.write_log(f"WINDOW {chunk}/{stride} (attempt {attempt}): " + " ".join(cmd))
         self.emit("attempt", attempt=attempt, window=f"{chunk}/{stride}")
-        env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUNBUFFERED="1",
-                   HF_HOME=str(ROOT / ".cache" / "huggingface"), HF_HUB_OFFLINE="1",
-                   TRANSFORMERS_OFFLINE="1")
+        # os.environ is already the clean pack environment (ck_env.apply(): HF_HOME,
+        # offline flags, temp, caches, no PYTHON* leaks)
+        env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUNBUFFERED="1")
         self.attempt_t0 = time.monotonic()
         self.last_fraction = 0.0
         self.phase("load", 0.0, "loading model")
@@ -488,14 +498,14 @@ class Runner:
         # inherited pipe (it hung 12 min under the window, whose stdin is a pipe).
         # +faststart puts the moov (and its colr box) at the front, so the check
         # below reads only the head of the file.
-        cmd = ["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", str(path), "-map", "0", "-c", "copy",
+        cmd = [str(ck_env.FFMPEG), "-nostdin", "-v", "error", "-y", "-i", str(path), "-map", "0", "-c", "copy",
                "-bsf:v", RETAG_BSF, "-colorspace", "smpte170m", "-color_primaries", "bt709",
                "-color_trc", "iec61966-2-1", "-movflags", "+write_colr+faststart", str(tmp)]
         r = subprocess.run(cmd, capture_output=True, text=True, stdin=subprocess.DEVNULL,
                            creationflags=gpu_win.CREATE_NO_WINDOW)
         if r.returncode != 0:
             raise JobError("retag_failed", f"ffmpeg retag failed for {path.name}: {r.stderr.strip()}")
-        tags = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+        tags = subprocess.run([str(ck_env.FFPROBE), "-v", "error", "-select_streams", "v:0", "-show_entries",
                                "stream=color_space,color_primaries,color_transfer,color_range,nb_frames",
                                "-of", "json", str(tmp)], capture_output=True, text=True,
                               stdin=subprocess.DEVNULL, creationflags=gpu_win.CREATE_NO_WINDOW).stdout

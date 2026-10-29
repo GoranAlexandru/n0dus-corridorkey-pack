@@ -29,6 +29,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / "corridorkey" / "runtime.py"
+FFPROBE = ROOT / "ffmpeg" / "bin" / "ffprobe.exe"   # pack: the bundled copy, never PATH
 OVERHEAD = 1.40
 MARGIN_GIB = 1.0
 WINDOWS = ((80, 40), (48, 24), (24, 12), (8, 4), (1, 1))   # always --low_vram
@@ -69,7 +70,7 @@ def need_gib(megapixels: float, frames: int, chunk: int) -> tuple[float, float]:
 
 def probe_clip(path: str) -> dict:
     out = subprocess.run(
-        ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+        [str(FFPROBE), "-v", "error", "-select_streams", "v:0", "-show_entries",
          "stream=width,height,nb_frames,r_frame_rate", "-of", "default=nw=1", path],
         capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL,
         creationflags=0x08000000).stdout
@@ -78,7 +79,7 @@ def probe_clip(path: str) -> dict:
         raise ValueError(f"not a readable video: {path}")
     frames = int(kv["nb_frames"]) if kv.get("nb_frames", "N/A").isdigit() else None
     if frames is None:  # some containers carry no frame count: count packets
-        out = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-count_packets",
+        out = subprocess.run([str(FFPROBE), "-v", "error", "-select_streams", "v:0", "-count_packets",
                               "-show_entries", "stream=nb_read_packets", "-of", "csv=p=0", path],
                              capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL,
                              creationflags=0x08000000).stdout

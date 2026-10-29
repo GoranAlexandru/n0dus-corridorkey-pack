@@ -10,17 +10,23 @@ from __future__ import annotations
 
 import ctypes
 import ctypes.wintypes as wt
+import os
 import subprocess
+from pathlib import Path
 
 GiB = 1024 ** 3
 CREATE_NO_WINDOW = 0x08000000
+_SYS32 = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32"
+# pack: Windows/NVIDIA tools by full path where Windows keeps them
+NVIDIA_SMI = str(_SYS32 / "nvidia-smi.exe") if (_SYS32 / "nvidia-smi.exe").is_file() else "nvidia-smi"
+TASKKILL = str(_SYS32 / "taskkill.exe") if (_SYS32 / "taskkill.exe").is_file() else "taskkill"
 
 
 # ---------------------------------------------------------------- nvidia-smi
 def gpu_info(index: int = 0) -> dict | None:
     try:
         out = subprocess.run(
-            ["nvidia-smi", f"--id={index}", "--query-gpu=name,memory.total,memory.used,memory.free",
+            [NVIDIA_SMI, f"--id={index}", "--query-gpu=name,memory.total,memory.used,memory.free",
              "--format=csv,noheader,nounits"],
             capture_output=True, text=True, timeout=20, stdin=subprocess.DEVNULL,
             creationflags=CREATE_NO_WINDOW).stdout
@@ -114,7 +120,7 @@ def watch_stdin_pipe(on_line, stop) -> bool:
 
 
 def kill_tree(pid: int) -> None:
-    subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True, stdin=subprocess.DEVNULL,
+    subprocess.run([TASKKILL, "/PID", str(pid), "/T", "/F"], capture_output=True, stdin=subprocess.DEVNULL,
                    creationflags=CREATE_NO_WINDOW)
 
 

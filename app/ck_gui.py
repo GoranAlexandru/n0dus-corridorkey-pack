@@ -19,9 +19,16 @@ from tkinter import filedialog, messagebox, ttk
 
 APP = Path(__file__).resolve().parent
 ROOT = APP.parent
-PY = ROOT / "venv" / "Scripts" / "python.exe"
+sys.path.insert(0, str(APP))   # pack: started with python -I, which leaves the script folder off sys.path
+
+import ck_env  # noqa: E402  (pack: paths + clean environment for everything this window starts)
+
+ck_env.apply()
+ck_env.hold_single_instance_marker()
+
+PY = ck_env.PY
 RUNNER = APP / "ck_run.py"
-SETTINGS = APP / "settings.json"
+SETTINGS = ck_env.SETTINGS
 VIDEO_EXT = {".mp4", ".mov", ".m4v"}
 IMAGE_EXT = {".png", ".jpg", ".jpeg"}
 VRAM_CHOICES = ["Auto", "4 GB", "6 GB", "8 GB", "12 GB", "16 GB", "24 GB"]
@@ -79,6 +86,7 @@ class App:
             return {}
 
     def save_settings(self):
+        SETTINGS.parent.mkdir(parents=True, exist_ok=True)
         self.settings.update(out_dir=self.out_var.get(), vram=self.vram_var.get(),
                              copy_original=bool(self.copy_var.get()), png16=bool(self.png16_var.get()),
                              key_anyway=bool(self.keyany_var.get()), geometry=self.root.geometry())
@@ -145,7 +153,9 @@ class App:
         self.cancel_btn = ttk.Button(b, text="Cancel", command=self.cancel, state="disabled")
         self.cancel_btn.pack(side="left", padx=6)
         ttk.Button(b, text="Clear finished", command=self.clear_finished).pack(side="left")
-        self.status = tk.StringVar(value="Ready." + ("" if HAVE_DND else "  (drag and drop unavailable)"))
+        ttk.Button(b, text="About", command=self.about).pack(side="left", padx=(6, 0))
+        self.status = tk.StringVar(value="Ready." + ("" if HAVE_DND else "  (drag and drop unavailable)")
+                                   + self.selftest_note())
         ttk.Label(b, textvariable=self.status).pack(side="right")
 
     def add_row(self, job):
@@ -239,7 +249,7 @@ class App:
     def plan(self, job, out_dir=None, kind="plan"):
         """--plan_only in a thread. kind="plan": queue display (dummy out dir);
         kind="preflight": just before running, against the real output folder."""
-        cmd = [str(PY), str(RUNNER), str(job.path), "--out_dir", str(out_dir or ROOT / "tmp"),
+        cmd = [str(PY), "-I", str(RUNNER), str(job.path), "--out_dir", str(out_dir or ck_env.TMP),
                "--plan_only"] + self.runner_args()
 
         def work():
@@ -290,10 +300,12 @@ class App:
     # ------------------------------------------------------------ run
     def start(self):
         out = self.out_var.get().strip()
-        if not out:
+        if not out or ck_env.inside_install(out):
+            if out:
+                self.refuse_inside_install(out)
             self.pick_out()
             out = self.out_var.get().strip()
-            if not out:
+            if not out or ck_env.inside_install(out):
                 return
         self.save_settings()
         if not any(j.state == "queued" for j in self.jobs):
@@ -356,7 +368,7 @@ class App:
 
     def launch(self, job, overwrite):
         out = Path(self.out_var.get().strip())
-        cmd = [str(PY), "-u", str(RUNNER), str(job.path), "--out_dir", str(out)] + self.runner_args()
+        cmd = [str(PY), "-I", "-u", str(RUNNER), str(job.path), "--out_dir", str(out)] + self.runner_args()
         if overwrite:
             cmd.append("--overwrite")
         job.state = "running"
@@ -414,7 +426,7 @@ class App:
             pass
         j = self.current
         if j and j.cancel_sent and j.proc.poll() is None and time.monotonic() - j.cancel_sent > 30:
-            subprocess.run(["taskkill", "/PID", str(j.proc.pid), "/T", "/F"], capture_output=True,
+            subprocess.run([ck_env.TASKKILL, "/PID", str(j.proc.pid), "/T", "/F"], capture_output=True,
                            creationflags=NO_WINDOW)  # the runner did not answer: force it
             j.cancel_sent = 0.0
         self.root.after(100, self.pump)
@@ -489,9 +501,45 @@ class App:
     # ------------------------------------------------------------ misc
     def pick_out(self):
         d = filedialog.askdirectory(title="Output folder", initialdir=self.out_var.get() or None)
+        if d and ck_env.inside_install(d):
+            self.refuse_inside_install(d)
+            return
         if d:
             self.out_var.set(os.path.normpath(d))
             self.save_settings()
+
+    def refuse_inside_install(self, d):
+        messagebox.showwarning(
+            "Output folder", f"{os.path.normpath(d)} is inside CorridorKey's own install folder, which an "
+            "update or uninstall replaces.\n\nPlease choose a folder outside it, e.g. in your project folders.")
+
+    # ------------------------------------------------------------ pack: about + self-test
+    def selftest_note(self):
+        try:
+            r = json.loads(ck_env.SELFTEST_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            return ""
+        return "" if r.get("result") == "pass" else "   Install self-test FAILED, see About."
+
+    def about(self):
+        try:
+            version = (ROOT / "VERSION").read_text().strip()
+        except OSError:
+            version = "?"
+        try:
+            st = json.loads(ck_env.SELFTEST_JSON.read_text(encoding="utf-8"))
+            selftest = f"{st.get('result', '?').upper()}: {st.get('message', '')}"
+        except Exception:
+            selftest = "not run"
+        text = (f"CorridorKey Pack {version}\n\n"
+                "CorridorKey 2.0 by Corridor Digital LLC, licensed under the Corridor Key Licence "
+                "(CC BY-NC-SA 4.0 + additional terms). Studio-internal use only.\n\n"
+                "Uses C-RADIOv4 (Licensed by NVIDIA Corporation under the NVIDIA Open Model License), "
+                "MoGe-2 (Microsoft, MIT), RVM (Google DeepMind, CC BY 4.0), PyTorch, FFmpeg (GPLv3) "
+                "and more; every licence is in the licences folder.\n\n"
+                f"Install self-test: {selftest}\n\nOpen the licences folder?")
+        if messagebox.askyesno("About CorridorKey", text):
+            os.startfile(ck_env.LICENCES)
 
     def open_out(self):
         d = self.out_var.get().strip()
@@ -515,7 +563,7 @@ class App:
             try:
                 p.wait(timeout=30)
             except subprocess.TimeoutExpired:
-                subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True,
+                subprocess.run([ck_env.TASKKILL, "/PID", str(p.pid), "/T", "/F"], capture_output=True,
                                creationflags=NO_WINDOW)
         self.save_settings()
         self.root.destroy()
